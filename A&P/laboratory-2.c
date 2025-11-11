@@ -1,5 +1,4 @@
 #include <stdio.h> 
-#include <math.h>
 #include <stdlib.h>
 
 void createlist(int *lst, int n){
@@ -76,19 +75,17 @@ int main(void) {
     printf("Введите кол-во элементов массива:\n ");
     scanf("%d", &n);
 
-    /*
-    int *lst = (int *)malloc(n * sizeof(int));
-    if (!lst) {
-        printf("Ошибка выделения памяти!");
-    }
-    */
    int lst[n];
 
     createlist(lst, n);
     printlist(lst, n);
     
-    printf("Введите значение x: ");
-    scanf("%d", &x);
+    do {
+        printf("Введите значение x: ");
+        scanf("%d", &x);
+        if (x < 0) printf("X >= 0, попробуйте снова\n");
+    } while (x < 0);
+
 
     int minElem = findMinElem(lst, n, x);
     printf("Минимальный элемент массива |bi| > %d = %d\n", x, minElem);
