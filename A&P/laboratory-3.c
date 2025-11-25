@@ -16,20 +16,18 @@ int input_int(const char* input) { // Функция проверки ввода
 
         bad_input = 0;
         check_float = 0;
-        while ((c = getchar()) != '\n' && c != EOF) {
+        while ((c = getchar()) != '\n' && c != EOF) { // Проверка на оставшиеся символы в потоке
             if (c == '.' || c == ',') {
                 check_float = 1;
             }
-            if (!bad_input) {
-                bad_input = 1; // найден лишний символ
-            }
+            bad_input = 1; // ошибка, тк лишний символ в потоке
         }
 
         if (res != 1 || check_float || bad_input) {
             printf("Ошибка! Введите целое число.\n");
-        }
+        } else break; // Ввод корректный
 
-    } while (res != 1);
+    } while (1);
 
     return x;
 }
@@ -54,10 +52,11 @@ void print_matrix(int matrix[MAX][MAX], int m, int n) {
     }
 }
 
+// Функция поиска минимального элемента
 int min_in_row_with_max_sum(int matrix[MAX][MAX], int m, int n) {
-    int max_sum = -2147483647;
+    int max_sum = -2147483647; // Минимально возможное число, которое хранит int
     int row_index = 0;
-    for (int i = 0; i < m; i++) {
+    for (int i = 0; i < m; i++) { // Поиск максимальной суммы
         int sum = 0;
         for (int j = 0; j < n; j++) {
             sum += matrix[i][j];
@@ -68,7 +67,7 @@ int min_in_row_with_max_sum(int matrix[MAX][MAX], int m, int n) {
         }
     }
 
-    int min_value = matrix[row_index][0];
+    int min_value = matrix[row_index][0]; // Ищем минимальное число
     for (int j = 1; j < n; j++) {
         if (matrix[row_index][j] < min_value)
             min_value = matrix[row_index][j];
@@ -76,7 +75,7 @@ int min_in_row_with_max_sum(int matrix[MAX][MAX], int m, int n) {
     return min_value;
 }
 
-// Вывод квадратного фрагмента k x k по диагонали (сверху слева)
+// Вывод квадратного фрагмента k x k по диагонали
 void print_diagonal_fragment(int matrix[MAX][MAX], int k) {
     printf("Квадратный фрагмент %d x %d по диагонали:\n", k, k);
     for (int sum = 0; sum <= k - 1; sum++) {
@@ -88,31 +87,32 @@ void print_diagonal_fragment(int matrix[MAX][MAX], int k) {
     }
 }
 
+// Основная функция
 int main(void) {
     int m, n;
 
     do {
         m = input_int("Введите количество строк: ");
-        if (m <= 0 || m > MAX) {
-            printf("Количество строк должно быть от 1 до %d!\n", MAX);
+        if (m <= 1 || m > MAX) {
+            printf("Количество строк должно быть от 2 до %d!\n", MAX);
         }
-    } while (m <= 0 || m > MAX);
+    } while (m <= 1 || m > MAX);
 
     do {
         n = input_int("Введите количество столбцов: ");
-        if (n <= 0 || n > MAX) {
-            printf("Количество столбцов должно быть от 1 до %d!\n", MAX);
+        if (n <= 1 || n > MAX) {
+            printf("Количество столбцов должно быть от 2 до %d!\n", MAX);
         }
-    } while (n <= 0 || n > MAX);
+    } while (n <= 1 || n > MAX);
 
-    int matrix[MAX][MAX];
+    int matrix[MAX][MAX]; // Инициализация матрицы 
     create_matrix(matrix, m, n);
     print_matrix(matrix, m, n);
 
-    int min_value = min_in_row_with_max_sum(matrix, m, n);
+    int min_value = min_in_row_with_max_sum(matrix, m, n); // Минимальный элемент
     printf("Минимальное значение в строке с максимальной суммой: %d\n", min_value);
 
-    int k = (m < n) ? m : n;
+    int k = (m < n) ? m : n; // Квадратный элемент
     print_diagonal_fragment(matrix, k);
 
     return 0;
